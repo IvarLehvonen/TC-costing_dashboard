@@ -1,0 +1,39 @@
+services:
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tc_backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - tc_data:/data
+    environment:
+      - PORT=3000
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r=>process.exit(r.ok?0:1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: tc_grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    volumes:
+      - tc_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=frser-sqlite-datasource
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  tc_data:
+    driver: local
