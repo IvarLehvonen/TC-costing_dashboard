@@ -13,7 +13,10 @@ docker compose up --build -d backend
 **90% case:**
 
 cd /workspaces/TC-costing_dashboard
+
 docker compose up -d
+
 sleep 30
+
 curl http://localhost:3000/health
 
