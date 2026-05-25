@@ -12,6 +12,7 @@ services:
       - tc_data:/data
     environment:
       - PORT=3000
+      - TC_KEY=${TC_KEY}
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r=>process.exit(r.ok?0:1))"]
       interval: 30s
