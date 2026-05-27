@@ -16,7 +16,5 @@ cd TC-costing_dashboard
 
 docker compose up -d
 
-sleep 30
-
-curl http://localhost:3000/health
+docker compose ps
 
